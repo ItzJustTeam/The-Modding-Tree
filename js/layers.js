@@ -173,9 +173,10 @@ addLayer("av", {
     }},
     branches: ["s"],
     color: "#EFD936",
-    requires() { return new Decimal(1e7).pow(player.av.points.add(1)) }, // Can be a function that takes requirement increases into account
+    requires: new Decimal(1e7), // Can be a function that takes requirement increases into account
     resource: "advancements", // Name of prestige currency
     baseResource: "strings", // Name of resource prestige is based on
+    base: new Decimal(1e7),
     baseAmount() {return player.s.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
