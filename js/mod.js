@@ -1,6 +1,6 @@
 let modInfo = {
 	name: "The Space Tree",
-	id: "test3",
+	id: "test4",
 	author: "ItzTeam",
 	pointsName: "planck lenghts",
 	modFiles: ["layers.js", "tree.js"],

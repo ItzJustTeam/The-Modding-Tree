@@ -146,12 +146,12 @@ addLayer("q", {
     milestones: {
         0: {
             requirementDescription: "2 Quarks",
-            done() {return player.q.points = new Decimal(2)},
+            done() {return player.q.best.gte(2)},
             effectDescription: "Triple your string gain.",
         },
         1: {
             requirementDescription: "10 Quarks",
-            done() {return player.q.points = new Decimal(10)},
+            done() {return player.q.best.gte(10)},
             effectDescription: "x2.5 your string gain.",
         },
     },
@@ -167,7 +167,7 @@ addLayer("av", {
     }},
     branches: ["s"],
     color: "#EFD936",
-    requires: new Decimal(1e7), // Can be a function that takes requirement increases into account
+    requires() { return new Decimal(1e7).pow(player.av.points.add(1)) }, // Can be a function that takes requirement increases into account
     resource: "advancements", // Name of prestige currency
     baseResource: "strings", // Name of resource prestige is based on
     baseAmount() {return player.s.points}, // Get the current amount of baseResource
