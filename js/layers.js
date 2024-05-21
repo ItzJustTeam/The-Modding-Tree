@@ -120,6 +120,7 @@ addLayer("q", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasMilestone('av', 1)) mult = mult.times(10)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -211,5 +212,12 @@ addLayer("av", {
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
         },
-    }
+    },
+    milestones: {
+        0: {
+            requirementDescription: "2 Advancements",
+            done() {return player.av.best.gte(2)},
+            effectDescription: "x10 Quarks",
+        },
+    },
 })
