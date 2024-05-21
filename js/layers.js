@@ -121,7 +121,7 @@ addLayer("q", {
     hotkeys: [
         {key: "q", description: "Q: Reset for quarks", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true},
+    layerShown(){return player.s.unlocked},
     upgrades: {
         11: {
             title: "Quark Booster I",
@@ -184,7 +184,7 @@ addLayer("av", {
     hotkeys: [
         {key: "a", description: "A: Reset for advancements", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true},
+    layerShown(){return player.q.unlocked},
     upgrades: {
         11: {
             title: "More Planck Lenght",
