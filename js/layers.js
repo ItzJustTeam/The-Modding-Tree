@@ -146,12 +146,12 @@ addLayer("q", {
     milestones: {
         0: {
             requirementDescription: "2 Quarks",
-            done() {return player.q.best = new Decimal(2)},
+            done() {return player.q.points = new Decimal(2)},
             effectDescription: "Triple your string gain.",
         },
         1: {
             requirementDescription: "10 Quarks",
-            done() {return player.q.best = new Decimal(10)},
+            done() {return player.q.points = new Decimal(10)},
             effectDescription: "x2.5 your string gain.",
         },
     },
