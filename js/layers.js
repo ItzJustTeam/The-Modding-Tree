@@ -49,21 +49,25 @@ addLayer("s", {
             title: "Universal Booster II",
             description: "Triple your planck lenght gain.",
             cost: new Decimal(2),
+            unlocked() {return hasUpgrade('s', 11)},
         },
         13: {
             title: "Strings, STRINGS!",
             description: "x2.5 your string gain.",
             cost: new Decimal(8),
+            unlocked() {return hasUpgrade('s', 12)},
         },
         14: {
             title: "Strings and planck lenghts",
             description: "x1.5 your planck lenght and string gain.",
             cost: new Decimal(30),
+            unlocked() {return hasUpgrade('s', 13)},
         },
         21: {
             title: "funny booster ig",
             description: "Boost planck lenght gain based on strings",
             cost: new Decimal(75),
+            unlocked() {return hasUpgrade('s', 14)},
             effect() {
                 return player[this.layer].points.add(1).pow(0.25)
             },
@@ -73,6 +77,7 @@ addLayer("s", {
             title: "funny booster again",
             description: "Boost planck lenght gain based on planck lenght",
             cost: new Decimal(150),
+            unlocked() {return hasUpgrade('s', 21)},
             effect() {
                 return player.points.add(1).pow(0.15)
             },
@@ -82,11 +87,13 @@ addLayer("s", {
             title: "Universal Booster III",
             description: "x5 your string gain.",
             cost: new Decimal(500),
+            unlocked() {return hasUpgrade('s', 22)},
         },
         24: {
             title: "the last funny booster",
             description: "Boost string gain based on planck lenght",
             cost: new Decimal(2000),
+            unlocked() {return hasUpgrade('s', 23)},
             effect() {
                 return player.points.add(1).pow(0.2)
             },
@@ -133,6 +140,7 @@ addLayer("q", {
             title: "Quark Booster II",
             description: "Boost string gain based on quarks",
             cost: new Decimal(4),
+            unlocked() {return hasUpgrade('q', 11)},
             effect() {
                 return player[this.layer].points.add(1).pow(0.5)
             },
@@ -142,6 +150,7 @@ addLayer("q", {
             title: "Quark Booster III",
             description: "x5 your string gain.",
             cost: new Decimal(35),
+            unlocked() {return hasUpgrade('q', 12)},
         },
     },
     milestones: {
