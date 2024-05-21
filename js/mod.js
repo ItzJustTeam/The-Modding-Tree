@@ -1,20 +1,20 @@
 let modInfo = {
-	name: "The ??? Tree",
-	id: "mymod",
-	author: "nobody",
-	pointsName: "points",
+	name: "The Space Tree",
+	id: "test1",
+	author: "ItzTeam",
+	pointsName: "planck lenghts",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new Decimal (10), // Used for hard resets and new players
-	offlineLimit: 1,  // In hours
+	initialStartPoints: new Decimal (1), // Used for hard resets and new players
+	offlineLimit: 5,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.0.1",
+	name: "Nothing lol!!!",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -22,7 +22,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added things.<br>
 		- Added stuff.`
 
-let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
+let winText = `Congrats! You've just reached the current end.`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -43,6 +43,13 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade('s', 11)) gain = gain.times(2)
+	if (hasUpgrade('s', 12)) gain = gain.times(3)
+	if (hasUpgrade('s', 14)) gain = gain.times(1.5)
+	if (hasUpgrade('s', 21)) gain = gain.times(upgradeEffect('s', 21))
+	if (hasUpgrade('s', 22)) gain = gain.times(upgradeEffect('s', 22))
+	if (hasUpgrade('q', 11)) gain = gain.times(1.75)
+	if (hasUpgrade('av', 11)) gain = gain.times(upgradeEffect('av', 11))
 	return gain
 }
 
