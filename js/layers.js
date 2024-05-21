@@ -215,7 +215,7 @@ addLayer("av", {
         },
         12: {
             title: "Buyables?",
-            description: "x2.5 your quark gain and unlock Advancement Buyables",
+            description: "x2.5 your quark gain and unlock Advancement Buyables (W.I.P)",
             cost: new Decimal(3),
             unlocked() {return hasUpgrade('av', 11)},
         },
