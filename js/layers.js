@@ -167,7 +167,7 @@ addLayer("av", {
     }},
     branches: ["s"],
     color: "#EFD936",
-    requires() { return new Decimal(1e7) }, // Can be a function that takes requirement increases into account
+    requires: new Decimal(1e7),
     resource: "advancements", // Name of prestige currency
     baseResource: "strings", // Name of resource prestige is based on
     baseAmount() {return player.s.points}, // Get the current amount of baseResource
