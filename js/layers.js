@@ -7,7 +7,7 @@ addLayer("s", {
     symbol: "S", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
-        unlocked: true,
+        unlocked: false,
 	    points: new Decimal(0),
     }},
     color: "#808080",
@@ -99,7 +99,7 @@ addLayer("q", {
     symbol: "Q", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
-        unlocked: true,
+        unlocked: false,
 		points: new Decimal(0),
     }},
     branches: ["s"],
@@ -121,7 +121,7 @@ addLayer("q", {
     hotkeys: [
         {key: "q", description: "Q: Reset for quarks", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return player.s.unlocked = true},
+    layerShown(){return player.s.unlocked},
     upgrades: {
         11: {
             title: "Quark Booster I",
@@ -162,7 +162,7 @@ addLayer("av", {
     symbol: "AV", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: -1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
-        unlocked: true,
+        unlocked: false,
 		points: new Decimal(0),
     }},
     branches: ["s"],
@@ -184,7 +184,7 @@ addLayer("av", {
     hotkeys: [
         {key: "a", description: "A: Reset for advancements", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return player.q.unlocked = true},
+    layerShown(){return player.q.unlocked},
     upgrades: {
         11: {
             title: "More Planck Lenght",
