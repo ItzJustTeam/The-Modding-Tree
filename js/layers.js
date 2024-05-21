@@ -121,6 +121,7 @@ addLayer("q", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if (hasMilestone('av', 0)) mult = mult.times(10)
+        if (hasUpgrade('av', 12)) mult = mult.times(2.5)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -211,6 +212,12 @@ addLayer("av", {
                 return player.q.points.add(1).pow(0.75)
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
+        },
+        12: {
+            title: "Buyables?",
+            description: "x2.5 your quark gain and unlock Advancement Buyables",
+            cost: new Decimal(3),
+            unlocked() {return hasUpgrade('av', 11)},
         },
     },
     milestones: {
