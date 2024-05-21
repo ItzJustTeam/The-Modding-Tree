@@ -38,6 +38,7 @@ addLayer("s", {
         {key: "s", description: "S: Reset for strings", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
+    passiveGeneration() { return (hasMilestone("q", 2))?1:0 },
     upgrades: {
         11: {
             title: "Universal Booster I",
@@ -153,6 +154,11 @@ addLayer("q", {
             requirementDescription: "10 Quarks",
             done() {return player.q.best.gte(10)},
             effectDescription: "x2.5 your string gain.",
+        },
+        2: {
+            requirementDescription: "10,000 Quarks",
+            done() {return player.q.best.gte(10000)},
+            effectDescription: "Gain 100% of strings gain per second",
         },
     },
 })
