@@ -8,7 +8,7 @@ let modInfo = {
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (1), // Used for hard resets and new players
-	offlineLimit: 5,  // In hours
+	offlineLimit: 1,  // In hours
 }
 
 // Set your version in num and name
@@ -50,6 +50,7 @@ function getPointGen() {
 	if (hasUpgrade('s', 22)) gain = gain.times(upgradeEffect('s', 22))
 	if (hasUpgrade('q', 11)) gain = gain.times(1.75)
 	if (hasUpgrade('av', 11)) gain = gain.times(upgradeEffect('av', 11))
+	if (hasUpgrade('av', 13)) gain = gain.times(upgradeEffect('av', 13))
 	return gain
 }
 
@@ -63,7 +64,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("e280000000"))
+	return player.points.gte(new Decimal("e36"))
 }
 
 

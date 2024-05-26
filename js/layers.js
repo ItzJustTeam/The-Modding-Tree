@@ -121,7 +121,8 @@ addLayer("q", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if (hasMilestone('av', 0)) mult = mult.times(10)
-        if (hasUpgrade('av', 12)) mult = mult.times(2.5)
+        if (hasUpgrade('av', 12)) mult = mult.times(5)
+        if (hasUpgrade('av', 14)) mult = mult.times(upgradeEffect('av', 14))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -203,6 +204,7 @@ addLayer("av", {
         {key: "a", description: "A: Reset for advancements", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return player.q.unlocked = true},
+    canBuyMax() { return (hasMilestone("av", 1))},
     upgrades: {
         11: {
             title: "More Planck Lenght",
@@ -214,10 +216,30 @@ addLayer("av", {
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
         },
         12: {
-            title: "Buyables?",
-            description: "x2.5 your quark gain and unlock Advancement Buyables (W.I.P)",
+            title: "Epic Booster",
+            description: "x5 your quark gain",
             cost: new Decimal(3),
             unlocked() {return hasUpgrade('av', 11)},
+        },
+        13: {
+            title: "Advancement Booster I",
+            description: "Boost planck lenght gain based on advancements",
+            cost: new Decimal(5),
+            unlocked() {return hasUpgrade('av', 12)},
+            effect() {
+                return player[this.layer].points.add(1).pow(3)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
+        },
+        14: {
+            title: "Advancement Booster II",
+            description: "Boost quark gain based on advancements",
+            cost: new Decimal(12),
+            unlocked() {return hasUpgrade('av', 13)},
+            effect() {
+                return player[this.layer].points.add(1).pow(0.85)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
         },
     },
     milestones: {
@@ -225,6 +247,11 @@ addLayer("av", {
             requirementDescription: "2 Advancements",
             done() {return player.av.best.gte(2)},
             effectDescription: "x10 Quarks",
+        },
+        1: {
+            requirementDescription: "12 Advancements",
+            done() {return player.av.best.gte(12)},
+            effectDescription: "You can now max buy advancements",
         },
     },
 })
