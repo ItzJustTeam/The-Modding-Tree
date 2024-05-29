@@ -19,6 +19,7 @@ addLayer("s", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        mult = mult.times(player.a.points.add(1).pow(1.25))
         if (hasUpgrade('s', 13)) mult = mult.times(3)
         if (hasUpgrade('s', 14)) mult = mult.times(1.5)
         if (hasUpgrade('s', 23)) mult = mult.times(5)
@@ -28,6 +29,8 @@ addLayer("s", {
         if (hasUpgrade('q', 12)) mult = mult.times(upgradeEffect('q', 12))
         if (hasMilestone('q', 1)) mult = mult.times(2.5)
         if (hasUpgrade('q', 13)) mult = mult.times(5)
+        if (hasUpgrade('a', 11)) mult = mult.times(2.65)
+        if (hasUpgrade('a', 13)) mult = mult.times(4)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -39,6 +42,12 @@ addLayer("s", {
     ],
     layerShown(){return true},
     passiveGeneration() { return (hasMilestone("q", 2))?1:0 },
+    doReset(resettingLayer) {
+        let keep = [];
+        if (hasMilestone("av", 1) && resettingLayer=="av") keep.push("upgrades")
+        if (hasMilestone("av", 1) && resettingLayer=="q") keep.push("upgrades")
+        if (layers[resettingLayer].row > this.row) layerDataReset("s", keep)
+    },
     upgrades: {
         11: {
             title: "Universal Booster I",
@@ -120,9 +129,17 @@ addLayer("q", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasUpgrade('q', 14)) mult = mult.times(upgradeEffect('q', 14))
+        if (hasUpgrade('q', 21)) mult = mult.times(5.5)
+        if (hasUpgrade('q', 22)) mult = mult.times(6)
         if (hasMilestone('av', 0)) mult = mult.times(10)
         if (hasUpgrade('av', 12)) mult = mult.times(5)
         if (hasUpgrade('av', 14)) mult = mult.times(upgradeEffect('av', 14))
+        if (hasUpgrade('av', 21)) mult = mult.times(upgradeEffect('av', 21))
+        if (hasUpgrade('a', 11)) mult = mult.times(7.5)
+        if (hasUpgrade('a', 12)) mult = mult.times(4.5)
+        if (hasUpgrade('a', 13)) mult = mult.times(4)
+        if (hasUpgrade('a', 14)) mult = mult.times(10)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -132,7 +149,7 @@ addLayer("q", {
     hotkeys: [
         {key: "q", description: "Q: Reset for quarks", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return player.s.unlocked = true},
+    layerShown(){return player.s.unlocked},
     upgrades: {
         11: {
             title: "Quark Booster I",
@@ -154,6 +171,28 @@ addLayer("q", {
             description: "x5 your string gain.",
             cost: new Decimal(35),
             unlocked() {return hasUpgrade('q', 12)},
+        },
+        14: {
+            title: "Quark Booster IV",
+            description: "Boost quark gain based on quarks",
+            cost: new Decimal(1e8),
+            unlocked() {return hasUpgrade('q', 13)},
+            effect() {
+                return player[this.layer].points.add(1).pow(0.1)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
+        },
+        21: {
+            title: "Quark Booster V",
+            description: "x5.5 your quark gain.",
+            cost: new Decimal(1.5e14),
+            unlocked() {return hasUpgrade('q', 14)},
+        },
+        22: {
+            title: "Quark Booster VI",
+            description: "x6 your quark gain.",
+            cost: new Decimal(5e25),
+            unlocked() {return hasUpgrade('q', 21)},
         },
     },
     milestones: {
@@ -191,7 +230,7 @@ addLayer("av", {
     base: new Decimal(1e7),
     baseAmount() {return player.s.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
+    exponent: 1.1, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult
@@ -201,10 +240,10 @@ addLayer("av", {
     },
     row: 1, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "a", description: "A: Reset for advancements", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "ctrl+a", description: "CTRL+A: Reset for advancements", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return player.q.unlocked = true},
-    canBuyMax() { return (hasMilestone("av", 1))},
+    layerShown(){return player.q.unlocked},
+    canBuyMax() { return (hasMilestone("av", 2))},
     upgrades: {
         11: {
             title: "More Planck Lenght",
@@ -224,10 +263,10 @@ addLayer("av", {
         13: {
             title: "Advancement Booster I",
             description: "Boost planck lenght gain based on advancements",
-            cost: new Decimal(5),
+            cost: new Decimal(4),
             unlocked() {return hasUpgrade('av', 12)},
             effect() {
-                return player[this.layer].points.add(1).pow(3)
+                return player[this.layer].points.add(1).pow(3.5)
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
         },
@@ -241,6 +280,26 @@ addLayer("av", {
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
         },
+        14: {
+            title: "Advancement Booster II",
+            description: "Boost quark gain based on advancements",
+            cost: new Decimal(6),
+            unlocked() {return hasUpgrade('av', 13)},
+            effect() {
+                return player[this.layer].points.add(1).pow(0.9)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
+        },
+        21: {
+            title: "Quarky Quark",
+            description: "Boost quark gain based on quarks",
+            cost: new Decimal(7),
+            unlocked() {return hasUpgrade('av', 14)},
+            effect() {
+                return player.q.points.add(1).pow(0.0235)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
+        },
     },
     milestones: {
         0: {
@@ -249,9 +308,78 @@ addLayer("av", {
             effectDescription: "x10 Quarks",
         },
         1: {
-            requirementDescription: "12 Advancements",
-            done() {return player.av.best.gte(12)},
+            requirementDescription: "5 Advancements",
+            done() {return player.av.best.gte(5) || hasMilestone('a', 0) },
+            effectDescription: "Keep string upgrades on advance and quarkify",
+        },
+        2: {
+            requirementDescription: "15 Advancements",
+            done() {return player.av.best.gte(15)},
             effectDescription: "You can now max buy advancements",
         },
     },
+})
+
+addLayer("a", {
+    name: "atomize", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    branches: ["av", "q"],
+    color: "#00599B",
+    glowColor: "#00599B",
+    requires: new Decimal(1e40), // Can be a function that takes requirement increases into account
+    resource: "atoms", // Name of prestige currency
+    baseResource: "quarks", // Name of resource prestige is based on
+    baseAmount() {return player.q.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.075, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 2, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "a", description: "A: Reset for atoms", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return player.av.unlocked},
+    effectDescription() {
+        return "which are boosting planck lenghts and strings by x"+format(player.a.points.add(1).pow(1.25))
+    },
+    upgrades: {
+        11: {
+            title: "Planck lenghter V1000",
+            description: "x7.5 your quark gain and x2.65 your planck lenght and string gain.",
+            cost: new Decimal(1),
+        },
+        12: {
+            title: "WE NEED THE QUARKS",
+            description: "x4.5 your quark gain.",
+            cost: new Decimal(4),
+        },
+        13: {
+            title: "do we actually need the quarks",
+            description: "x4 your quark and string gain",
+            cost: new Decimal(6),
+        },
+        14: {
+            title: "BIG JUMP",
+            description: "x10 your quark gain",
+            cost: new Decimal(10000),
+        },
+    },
+    milestones: {
+        0: {
+            requirementDescription: "5 Atoms",
+            done() {return player.a.best.gte(5)},
+            effectDescription: "Keep advancement's milestone 2 on row 2 reset",
+            unlocked() {return hasUpgrade('a', 12)},
+        }
+    }
 })

@@ -1,6 +1,6 @@
 let modInfo = {
 	name: "The Space Tree",
-	id: "test5",
+	id: "test6",
 	author: "ItzTeam",
 	pointsName: "planck lenghts",
 	modFiles: ["layers.js", "tree.js"],
@@ -43,6 +43,7 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	gain = gain.times(player.a.points.add(1).pow(1.25))
 	if (hasUpgrade('s', 11)) gain = gain.times(2)
 	if (hasUpgrade('s', 12)) gain = gain.times(3)
 	if (hasUpgrade('s', 14)) gain = gain.times(1.5)
@@ -51,6 +52,7 @@ function getPointGen() {
 	if (hasUpgrade('q', 11)) gain = gain.times(1.75)
 	if (hasUpgrade('av', 11)) gain = gain.times(upgradeEffect('av', 11))
 	if (hasUpgrade('av', 13)) gain = gain.times(upgradeEffect('av', 13))
+	if (hasUpgrade('a', 11)) gain = gain.times(2.65)
 	return gain
 }
 
@@ -64,7 +66,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("e36"))
+	return player.points.gte(new Decimal("e160"))
 }
 
 
